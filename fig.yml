@@ -1,0 +1,23 @@
+db:
+  image: mysql
+  environment:
+    MYSQL_DATABASE: myapp_development
+    MYSQL_ROOT_PASSWORD: root
+  ports:
+     - "0.0.0.0:3306:3306"
+
+redis:
+  image: redis
+  ports:
+    - "0.0.0.0:6379:6379"
+
+web:
+  build: .
+  command: bundle exec rails s -b 0.0.0.0
+  volumes:
+    - .:/myapp
+  ports:
+    - "3000:3000"
+  links:
+    - db
+    - redis
